@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Auth } from 'aws-amplify';
 import { Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import './Login.css';
 
@@ -23,8 +24,15 @@ export default class Login extends Component {
     });
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+
+    try {
+      await Auth.signIn(this.state.email, this.state.password);
+      this.props.userHasAuthenticated(true);
+    } catch (e) {
+      alert(e.message);
+    }
   }
 
   render() {
