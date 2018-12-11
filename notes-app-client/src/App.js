@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Auth } from 'aws-amplify';
 import './App.css';
 import Routes from './Routes';
 
@@ -10,15 +11,34 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      isAuthenticating: true
     };
+  }
+
+  async componentDidMount() {
+    try {
+      // using currentSession to make login persist
+      await Auth.currentSession();
+      this.userHasAuthenticated(true);
+    }
+    catch(e) {
+      if (e !== 'No Current User') {
+        alert(e);
+      }
+    }
+
+    this.setState({ isAuthenticating: false })
   }
 
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
   }
 
-  handleLogout = event => {
+  handleLogout = async event => {
+    // when user logs out then refreshes user is logged out completely
+    await Auth.signOut();
+
     this.userHasAuthenticated(false);
   }
 
@@ -29,6 +49,7 @@ class App extends Component {
     };
 
     return (
+      !this.state.isAuthenticating &&
       <div className="App container">
       {/* Bootstrap navbar, fits to container width with fluid */}
         <Navbar fluid collapseOnSelect>
