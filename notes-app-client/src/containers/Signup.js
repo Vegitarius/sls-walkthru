@@ -83,7 +83,7 @@ export default class Signup extends Component {
         <FormGroup controlId='confirmationCode' bsSize='large'>
           <ControlLabel>Confirmation Code</ControlLabel>
           <FormControl
-            autofocus
+            autoFocus
             type='tel'
             value={this.state.confirmationCode}
             onChange={this.handleChange}
@@ -109,7 +109,7 @@ export default class Signup extends Component {
         <FormGroup controlId='email' bsSize='large'>
           <ControlLabel>Email</ControlLabel>
           <FormControl
-            autofocus
+            autoFocus
             type='email'
             value={this.state.email}
             onChange={this.handleChange}
