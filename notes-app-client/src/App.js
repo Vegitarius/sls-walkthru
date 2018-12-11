@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import './App.css';
-
 import Routes from './Routes';
 
 class App extends Component {
@@ -21,6 +20,7 @@ class App extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
+            {/* uses react bootstrap router to route page without refreshing */}
               <LinkContainer to='/signup'>
                 <NavItem href='/signup'>Signup</NavItem>
               </LinkContainer>
