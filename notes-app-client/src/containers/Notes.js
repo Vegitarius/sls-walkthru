@@ -4,6 +4,7 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import config from '../config';
 import LoaderButton from '../components/LoaderButton';
 import './Notes.css';
+import { s3Upload } from '../libs/awsLib';
 
 export default class Notes extends Component {
   constructor(props) {
@@ -59,10 +60,17 @@ export default class Notes extends Component {
   }
 
   handleFileChange = event => {
-    this.file = event.target.file[0];
+    this.file = event.target.files[0];
+  }
+
+  saveNote(note) {
+    return API.put('notes', `/notes/${this.props.match.params.id}`, {
+      body: note
+    });
   }
 
   handleSubmit = async event => {
+    let attachment;
     event.preventDefault();
 
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
@@ -71,6 +79,25 @@ export default class Notes extends Component {
     }
 
     this.setState({ isLoading: true });
+
+    try {
+      if (this.file) {
+        attachment = await s3Upload(this.file);
+      }
+
+      await this.saveNote({
+        content: this.state.content,
+        attachment: attachment || this.state.note.attachment
+      });
+      this.props.history.push('/');
+    } catch(e) {
+        alert(e);
+        this.setState({ isLoading: false });
+    }
+  }
+
+  deleteNote() {
+    return API.del('notes', `/notes/${this.props.match.params.id}`);
   }
 
   handleDelete = async event => {
@@ -85,6 +112,14 @@ export default class Notes extends Component {
     }
 
     this.setState({ isDeleting: true });
+
+    try {
+      await this.deleteNote();
+      this.props.history.push('/');
+    } catch(e) {
+      alert(e);
+      this.setState({ isDeleting: false });
+    }
   } 
 
   render() {

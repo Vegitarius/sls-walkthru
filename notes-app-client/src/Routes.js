@@ -7,17 +7,20 @@ import Login from './containers/Login';
 import NotFound from './containers/NotFound';
 import NewNote from './containers/NewNote';
 import Notes from './containers/Notes';
+
+import AuthenticatedRoute from './components/AuthenticatedRoute';
+import UnauthenticatedRoute from './components/UnauthenticatedRoute';
 import AppliedRoute from './components/AppliedRoute';
 
-export default ({ childProps }) => 
+export default ({ childProps }) =>
   // switch component renders first matching route
   <Switch>
     {/* needs exact otherwise matches any path that starts with / */}
     <AppliedRoute path="/" exact component={Home} props={childProps} />
-    <AppliedRoute path='/signup' exact component={Signup} prop={childProps} />
-    <AppliedRoute path='/login' exact component={Login} props={childProps} />
-    <AppliedRoute path='/notes/new' exact component={NewNote} props={childProps} />
-    <AppliedRoute path='/notes/:id' exact component={Notes} props={childProps} />
+    <UnauthenticatedRoute path='/signup' exact component={Signup} props={childProps} />
+    <UnauthenticatedRoute path='/login' exact component={Login} props={childProps} />
+    <AuthenticatedRoute path='/notes/new' exact component={NewNote} props={childProps} />
+    <AuthenticatedRoute path='/notes/:id' exact component={Notes} props={childProps} />
 
 
     {/* used to catch and direct 404 errors properly */}

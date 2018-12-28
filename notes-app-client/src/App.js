@@ -70,7 +70,7 @@ class App extends Component {
                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                 : <Fragment>
                     <LinkContainer to='/signup'>
-                      <NavItem>SignUp</NavItem>
+                      <NavItem>Sign Up</NavItem>
                     </LinkContainer>
                     <LinkContainer to='/login'>
                       <NavItem>Login</NavItem>

@@ -15,6 +15,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "aws s3 sync build/ s3://notes-app-clients --delete",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id E28JYCFMSRCSH1 --paths /* && aws cloudfront create-invalidation --distribution-id E2UCWTEA0ZL5IV --paths /*",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
